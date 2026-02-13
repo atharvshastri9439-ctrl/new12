@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine? ❤️</title>
+
+  <style>
+    body {
+      text-align: center;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: linear-gradient(to bottom, #ffb3b3, #ff80a1);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: backgroundAnimation 5s infinite alternate;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes backgroundAnimation {
+      0% { background: linear-gradient(to bottom, #ffb3b3, #ff80a1); }
+      100% { background: linear-gradient(to bottom, #ff80a1, #ffb3b3); }
+    }
+
+    #start-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    #start {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    #start:hover {
+      transform: scale(1.1);
+      background-color: #ff6666;
+    }
+
+    /* SCREENS */
+    #question-container, #answer-container, #love-card-container, #gif-section {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 92%;
+      max-width: 750px;
+      display: none;
+    }
+
+    h1 {
+      color: #ff4d4d;
+      font-size: 36px;
+      animation: textGlow 2s ease-in-out infinite alternate;
+      white-space: pre-line;
+      margin-bottom: 10px;
+    }
+
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d; }
+      100% { text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d; }
+    }
+
+    .btn-container {
+      margin-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      width: 340px;
+      height: 130px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 15px 25px;
+      border: none;
+      cursor: pointer;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+    }
+
+    #yes {
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    #no {
+      background-color: #999;
+      color: white;
+      position: absolute;
+      right: 0;
+    }
+
+    /* ANSWER CARD */
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+      max-height: 65vh;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .card h2 {
+      color: #ff4d4d;
+      font-size: 30px;
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .card p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    .next-btn {
+      margin-top: 18px;
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    .next-btn:hover {
+      transform: scale(1.06);
+      background-color: #ff6666;
+    }
+
+    /* LOVE CARD */
+    .card ul {
+      font-size: 18px;
+      line-height: 1.6;
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .card li {
+      margin-bottom: 10px;
+    }
+
+    /* POPUP */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: popupAnimation 1s ease-in-out;
+      width: 90%;
+      max-width: 650px;
+      z-index: 9999;
+    }
+
+    @keyframes popupAnimation {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .popup h2 {
+      font-size: 28px;
+      color: #ff4d4d;
+    }
+
+    /* GIFS */
+    #gif-section img {
+      width: 250px;
+      margin: 10px;
+      border-radius: 10px;
+      animation: gifAnimation 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes gifAnimation {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    audio {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="start-container">
+    <button id="start" onclick="startMusic()">Start the Love 💖</button>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="song.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- QUESTION SCREEN -->
+  <div id="question-container">
+    <h1 id="question">Do you love me, Nanceeee? ❤️</h1>
+
+    <div class="btn-container">
+      <button id="yes" onclick="yesClicked()">Yes 😍</button>
+
+      <button id="no"
+              onclick="noClicked()"
+              onmouseenter="startNoDodge()"
+              onmouseleave="stopNoDodge()">
+        No 😭
+      </button>
+    </div>
+  </div>
+
+  <!-- ANSWER SCREEN -->
+  <div id="answer-container">
+    <div class="card">
+      <h2>My Answer 😘</h2>
+      <p id="my-answer"></p>
+
+      <div style="text-align:center;">
+        <button class="next-btn" onclick="nextFromAnswer()">Next 💖</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOVE CARD SCREEN -->
+  <div id="love-card-container">
+    <div class="card">
+      <h2>What I Love About You ❤️</h2>
+      <ul>
+        <li><b>Your smile</b> — it lights up my entire world</li>
+        <li><b>Your laugh</b> — the most beautiful sound I know</li>
+        <li><b>Your kindness</b> — the way you care for everyone around you</li>
+        <li><b>Your strength</b> — how you handle everything with grace</li>
+        <li><b>Your quirks</b> — all the little things that make you uniquely YOU</li>
+        <li><b>Your love</b> — how lucky I am to be loved by you</li>
+        <li><b>Your sweetness</b> — all the nicknames that you have given me</li>
+        <li><b>Your cuteness</b> — from your hiccups to your sneeze, everything is so damn cute 😭❤️</li>
+      </ul>
+
+      <div style="text-align:center;">
+        <button class="next-btn" onclick="continueAfterLoveCard()">Next 💖</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP -->
+  <div class="popup" id="popup">
+    <h2>I can’t imagine my life without you. Always and forever, my Valentine(pfffffff no matter how old we get, every year imma ask u to be my valentine, all i have is you babe , only YOU. 😘</h2>
+    <button onclick="showGIFs()">Awww 🥰</button>
+  </div>
+
+  <!-- GIFS -->
+  <div id="gif-section">
+    <h1>You and Me in futuree ❤️</h1>
+    <img src="https://media2.giphy.com/media/AOa3xz03AH4kg/giphy.gif">
+    <img src="https://media4.giphy.com/media/n0IKF3qkeh671VAO45/giphy.gif">
+    <img src="https://media2.giphy.com/media/HPScNVe2stDajzyKXD/giphy.gif">
+    <img src="https://media2.giphy.com/media/iwAtQMcDXw6dgo26xm/giphy.gif">
+  </div>
+
+  <script>
+    // QUESTIONS
+    let questions = [
+      "Do you love me, hmhmm my nancy baby? ❤️",
+      "Do you feel loved, safe, cared and understood? 🥰",
+      "Can you imagine us creating amazing memories together(cannot forget abt our cute children)? 💖",
+      "We are gonna travel the world together and be with each other no matter what,yes n? 🌍"
+    ];
+
+    // YOUR ANSWERS (same order)
+    let myAnswers = [
+      "I love youuu tooo my nancy baby ,, sooooooo muchhhhh , ur the only person in this entire world that i love more than chocolate cake, trust me, if i am given a choice between chocolate cake and you , i would eat you ANYDAY ❤️",
+      "I feel safe in ur presence too babe , ur presence is like the shadow provided by a tree, like a fresh splash of cold water on the most sunny day, like the fragrant smell of a flower in this pitiful world, like the oxygen i can't live without 💗",
+      "yayyyyyyyy me toooo ,, like just imagining allllll of us having fun together as we grow together is heart warming , sippping on a cup of hot coffee and kissing u while sitting in our living room or the patio out in the backyard , its like THE THING I WANT IN OUR LIFE ☕💖",
+      "OMGGGGGGGG , YAYYYYYYYYYYYYY,, TARVELLING TOEGTEHRR WITH MY WORLDDDDD ,, THATS JUST PUREEEE JOY AND LOVEE ,, CANT WAIT TO HOLD UR HANDS WHILE WE ARE WALKING OR HOLD UR WAIST JUST TO KEEP U FALLING FROM A SUDDEN BRAKE IN THE VEHICLE , I JSUT CANT WAIT TO SPEND EVERY SECOND OF MY LIFE WITH U ❤️🌍"
+    ];
+
+    let index = 0;
+    let finalQuestionActive = false;
+
+    // NO button logic (ONLY for first question)
+    let noClickCount = 0;
+    let noDodgyMode = false;
+    let noLocked = false;
+    let noHoverInterval = null;
+
+    function hideAllScreens() {
+      document.getElementById("question-container").style.display = "none";
+      document.getElementById("answer-container").style.display = "none";
+      document.getElementById("love-card-container").style.display = "none";
+      document.getElementById("gif-section").style.display = "none";
+    }
+
+    function startMusic() {
+      document.getElementById("bg-music").play();
+      document.getElementById("start-container").style.display = "none";
+
+      hideAllScreens();
+      document.getElementById("question-container").style.display = "block";
+    }
+
+    function yesClicked() {
+      // FINAL QUESTION YES
+      if (finalQuestionActive) {
+        showPopup();
+        return;
+      }
+
+      // Remove NO forever after first YES
+      document.getElementById("no").style.display = "none";
+
+      // Show your answer card
+      showAnswerCard();
+    }
+
+    function showAnswerCard() {
+      hideAllScreens();
+      document.getElementById("answer-container").style.display = "block";
+      document.getElementById("my-answer").innerText = myAnswers[index];
+    }
+
+    function nextFromAnswer() {
+      // After answer, go to next question or love card
+      if (index < questions.length - 1) {
+        index++;
+        hideAllScreens();
+        document.getElementById("question-container").style.display = "block";
+        document.getElementById("question").innerText = questions[index];
+      } else {
+        // After last question's answer -> love card
+        showLoveCard();
+      }
+    }
+
+    function showLoveCard() {
+      hideAllScreens();
+      document.getElementById("love-card-container").style.display = "block";
+    }
+
+    function continueAfterLoveCard() {
+      hideAllScreens();
+      document.getElementById("question-container").style.display = "block";
+
+      finalQuestionActive = true;
+      document.getElementById("question").innerText = "Nance,will you be my Valentine,plsssssssssssssss? 💌";
+
+      // only YES button now
+      document.getElementById("no").style.display = "none";
+    }
+
+    function noClicked() {
+      // only works if NO exists (first screen only)
+      if (noLocked) return;
+
+      noClickCount++;
+
+      if (noClickCount === 1) {
+        document.getElementById("question").innerText =
+          "PFFFFFFFF 😭 I knew you'd click on NO for fun.\nYou're now stuck with me 😤❤️\nI'm ALL yours and you are ALL mine 😘\n\nNow click YES 😌";
+
+        noDodgyMode = true;
+        noLocked = true;
+
+        moveNo();
+        return;
+      }
+    }
+
+    function startNoDodge() {
+      if (!noDodgyMode) return;
+
+      moveNo();
+
+      if (noHoverInterval) return;
+
+      noHoverInterval = setInterval(() => {
+        moveNo();
+      }, 120);
+    }
+
+    function stopNoDodge() {
+      if (noHoverInterval) {
+        clearInterval(noHoverInterval);
+        noHoverInterval = null;
+      }
+    }
+
+    function moveNo() {
+      if (!noDodgyMode) return;
+
+      let noButton = document.getElementById("no");
+      let parent = document.querySelector(".btn-container");
+
+      let btnWidth = noButton.offsetWidth;
+      let btnHeight = noButton.offsetHeight;
+      let containerWidth = parent.offsetWidth;
+      let containerHeight = parent.offsetHeight;
+
+      let x = Math.random() * (containerWidth - btnWidth);
+      let y = Math.random() * (containerHeight - btnHeight);
+
+      noButton.style.transition = "transform 0.22s ease";
+      noButton.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function showPopup() {
+      hideAllScreens();
+      document.getElementById("popup").style.display = "block";
+    }
+
+    function showGIFs() {
+      document.getElementById("popup").style.display = "none";
+      hideAllScreens();
+      document.getElementById("gif-section").style.display = "block";
+    }
+
+    // start hidden until Start button
+    hideAllScreens();
+  </script>
+
+</body>
+</html>
